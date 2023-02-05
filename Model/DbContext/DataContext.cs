@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 namespace Model.DbContext
 {
     public class DataContext : Microsoft.EntityFrameworkCore.DbContext
