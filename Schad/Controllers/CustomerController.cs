@@ -5,46 +5,52 @@ using Schad.Models;
 
 namespace Schad.Controllers
 {
-    public class CustomerTypeController : Controller
+    public class CustomerController : Controller
     {
+        private readonly ICustomer _customer;
+
         private readonly ICustomerType _customerType;
 
-        public CustomerTypeController(ICustomerType customerType)
+        public CustomerController(ICustomer customer, ICustomerType customerType)
         {
+            _customer = customer;
             _customerType = customerType;
         }
-        // GET: CustomerTypeController
+        // GET: CustomerController
         public async Task<ActionResult> Index()
         {
-            var model = await _customerType.GetAllAsync();
+            var model = await _customer.GetAllAsync();
             return View(model);
         }
 
-        // GET: CustomerTypeController/Details/5
+        // GET: CustomerController/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var model = await _customerType.GetByIdAsync(id);
+            var model = await _customer.GetByIdAsync(id);
             return View(model);
         }
 
-        // GET: CustomerTypeController/Create
+        // GET: CustomerController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: CustomerTypeController/Create
+        // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CustomerTypeViewMolde collection)
+        public async Task<ActionResult> Create(CustomerViewModel collection)
         {
             try
             {
-                var model = new CustomerType()
+                var model = new Customer()
                 {
-                    Description = collection.Description,
+                    Adress= collection.Adress,
+                    CustName=collection.CustName,
+                    CustomerType =  await _customerType.GetByIdAsync(collection.CustomerType.Id),
+                    Status= true
                 };
-                var a = await _customerType.AddAsync(model);
+                var a = await _customer.AddAsync(model);
                 if (a)
                 {
                     return RedirectToAction(nameof(Index));
@@ -61,28 +67,28 @@ namespace Schad.Controllers
             }
         }
 
-        // GET: CustomerTypeController/Edit/5
+        // GET: CustomerController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var model = await _customerType.GetByIdAsync(id);
+            var model = await _customer.GetByIdAsync(id);
             return View(model);
         }
 
-        // POST: CustomerTypeController/Edit/5
+        // POST: CustomerController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(CustomerTypeViewMolde collection)
+        public async Task<ActionResult> Edit(CustomerViewModel collection)
         {
             try
             {
-                var model = await _customerType.GetByIdAsync(collection.Id);
-                if (model == null) 
-                { 
-                    return View("Error"); 
+                var model = await _customer.GetByIdAsync(collection.Id);
+                if (model == null)
+                {
+                    return View("Error");
                 }
                 else
                 {
-                    var a = await _customerType.EditAsync(model);
+                    var a = await _customer.EditAsync(model);
                     if (a)
                     {
                         return RedirectToAction(nameof(Index));
@@ -99,28 +105,28 @@ namespace Schad.Controllers
             }
         }
 
-        // GET: CustomerTypeController/Delete/5
+        // GET: CustomerController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
-            var model = await _customerType.GetByIdAsync(id);
+            var model = await _customer.GetByIdAsync(id);
             return View(model);
         }
 
-        // POST: CustomerTypeController/Delete/5
+        // POST: CustomerController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(CustomerTypeViewMolde collection)
+        public async Task<ActionResult> Delete(CustomerViewModel collection)
         {
             try
             {
-                var model = await _customerType.GetByIdAsync(collection.Id);
+                var model = await _customer.GetByIdAsync(collection.Id);
                 if (model == null)
                 {
                     return View("Error");
                 }
                 else
                 {
-                    var a = await _customerType.DeleteAsync(model);
+                    var a = await _customer.DeleteAsync(model);
                     if (a)
                     {
                         return RedirectToAction(nameof(Index));
