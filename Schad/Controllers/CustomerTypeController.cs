@@ -55,7 +55,7 @@ namespace Schad.Controllers
                     return View(collection);
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return View();
             }
@@ -93,7 +93,7 @@ namespace Schad.Controllers
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return View(collection);
             }
@@ -132,7 +132,7 @@ namespace Schad.Controllers
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return View(collection);
             }

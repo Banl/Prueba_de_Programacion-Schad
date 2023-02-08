@@ -1,5 +1,6 @@
 ﻿using DAL.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Model;
 using Schad.Models;
 
@@ -28,10 +29,81 @@ namespace Schad.Controllers
             var model = await _invoice.GetByIdAsync(id);
             return View(model);
         }
+        // GET: Invoice/Create
+        public async Task<ActionResult> AddDetails(int id)
+        {
+            var IdInvo = await _invoice.GetByIdAsync(id);
+            var model = new InvoiceDeteilViewModel()
+            {
+                Invoices = IdInvo.Id
+            };
+            return View(model);
+        }
+
+        // POST: Invoice/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddDetails(InvoiceDeteilViewModel collection)
+        {
+            try
+            {
+                var invoice = await _invoice.GetByIdAsync(collection.Invoices);
+                var model = new InvoiceDetail()
+                {
+                    TotalItbis = collection.TotalItbis,
+                    SubTotal = collection.SubTotal,
+                    Total = collection.Total,
+                    Price = collection.Price,
+                    Qty = collection.Qty,
+                    CustomerId = invoice.Customer.Id,
+                    Invoice = invoice
+                };
+                var a = await _invoice.AddDetail(model);
+                if (a)
+                {
+                    return RedirectToAction(nameof(Details), new { id = invoice.Id });
+                }
+                else
+                {
+                    return View(collection);
+                }
+            }
+            catch (Exception e)
+            {
+                return View(collection);
+            }
+        }
+
+        // POST: Invoice/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveDetail(int id)
+        {
+            var collection = await _invoice.GetByIdAsync(id);
+            try
+            {
+                var model = await _invoice.GetByIdAsync(collection.Id);
+                if (model == null)
+                {
+                    return View("Error");
+                }
+                else
+                {
+                    var a = await _invoice.DeleteAsync(model);
+                    return RedirectToAction(nameof(Details), new { id = collection.Id });
+
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Details), new { id = collection.Id });
+            }
+        }
 
         // GET: Invoice/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            ViewBag.Customer = new SelectList(await _customer.GetAllAsync(), "Id", "CustName");
             return View();
         }
 
@@ -44,27 +116,24 @@ namespace Schad.Controllers
             {
                 var model = new Invoice()
                 {
-                    Id = collection.Id,
                     TotalItbis = collection.TotalItbis,
                     SubTotal = collection.SubTotal,
                     Total = collection.Total,
-                    Customer = await _customer.GetByIdAsync(collection.Customer.Id),
-                    InvoiceDeteils = new List<InvoiceDeteil>() { }
+                    Customer = await _customer.GetByIdAsync(collection.Customer),
                 };
                 var a = await _invoice.AddAsync(model);
                 if (a)
                 {
-                    return RedirectToAction(nameof(Index));
-
+                    return RedirectToAction(nameof(AddDetails), new { id = model.Id });
                 }
                 else
                 {
                     return View(collection);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+                return View(collection);
             }
         }
 
@@ -101,7 +170,7 @@ namespace Schad.Controllers
                 }
 
             }
-            catch
+            catch (Exception e)
             {
                 return View();
             }
@@ -131,8 +200,7 @@ namespace Schad.Controllers
                     var a = await _invoice.DeleteAsync(model);
                     if (a)
                     {
-                        return RedirectToAction(nameof(Index));
-
+                        return RedirectToAction(nameof(AddDetails), new { id = model.Id });
                     }
                     else
                     {
@@ -140,7 +208,7 @@ namespace Schad.Controllers
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return View(collection);
             }

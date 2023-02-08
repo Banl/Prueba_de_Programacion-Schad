@@ -36,9 +36,34 @@
             @Html.DisplayFor(model => model.Total)
         </dd>
     </dl>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">
+        Delete
+    </button>
+    <div id="Modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete</h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p class="modal-title">Are you sure?</p>
+                        <form asp-action="Delete">
+                            <input type="submit" value="Delete" class="btn btn-danger" /> |
+                            <a asp-action="Index">Back to List</a>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
     
     <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

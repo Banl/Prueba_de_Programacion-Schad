@@ -38,18 +38,30 @@ namespace DAL.Implemention
 
         public async Task<IEnumerable<Invoice>> GetAllAsync()
         {
-            return await _context.Invoices.
+            return await _context.Invoice.
                 Include(c => c.Customer).
-                Include(c => c.InvoiceDeteils).
+                Include(c => c.InvoiceDetail).
                 ToListAsync();
         }
 
         public async Task<Invoice> GetByIdAsync(int id)
         {
-            return await _context.Invoices.
+            return await _context.Invoice.
                 Include(c => c.Customer).
-                Include(c => c.InvoiceDeteils).
+                Include(c => c.InvoiceDetail).
                 SingleAsync(c => c.Id == id);
+        }
+
+        //Detalle//
+        public async Task<bool> AddDetail(InvoiceDetail entity)
+        {
+            _context.Add(entity);
+            return await _context.SaveChangesAsync() > 0;
+        }
+        public async Task<bool> RemoveDetail(InvoiceDetail entity)
+        {
+            _context.Remove(entity);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

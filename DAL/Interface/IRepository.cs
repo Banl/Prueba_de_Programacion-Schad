@@ -14,5 +14,9 @@ namespace DAL.Interface
     }
     public interface ICustomerType : IRepository<CustomerType> { }
     public interface ICustomer : IRepository<Customer> { }
-    public interface IInvoice : IRepository<Invoice> { }
+    public interface IInvoice : IRepository<Invoice> 
+    { 
+        Task<bool> AddDetail(InvoiceDetail entity);
+        Task<bool> RemoveDetail(InvoiceDetail entity);
+    }
 }

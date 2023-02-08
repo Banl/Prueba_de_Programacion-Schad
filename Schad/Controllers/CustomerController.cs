@@ -1,5 +1,6 @@
 ﻿using DAL.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Model;
 using Schad.Models;
 
@@ -31,8 +32,9 @@ namespace Schad.Controllers
         }
 
         // GET: CustomerController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            ViewBag.CustomerType = new SelectList(await _customerType.GetAllAsync(), "Id", "Description");
             return View();
         }
 
@@ -47,7 +49,7 @@ namespace Schad.Controllers
                 {
                     Adress= collection.Adress,
                     CustName=collection.CustName,
-                    CustomerType =  await _customerType.GetByIdAsync(collection.CustomerType.Id),
+                    CustomerType =  await _customerType.GetByIdAsync(collection.CustomerType),
                     Status= true
                 };
                 var a = await _customer.AddAsync(model);
@@ -61,7 +63,7 @@ namespace Schad.Controllers
                     return View(collection);
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return View();
             }
@@ -99,7 +101,7 @@ namespace Schad.Controllers
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return View(collection);
             }
@@ -138,7 +140,7 @@ namespace Schad.Controllers
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return View(collection);
             }

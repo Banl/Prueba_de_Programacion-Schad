@@ -40,6 +40,7 @@ namespace DAL.Implemention
         public async Task<IEnumerable<Customer>> GetAllAsync()
         {
             return await _context.Customers.
+                Include(c => c.Invoice).
                 Include(c => c.CustomerType).
                 ToListAsync();
         }
@@ -47,7 +48,7 @@ namespace DAL.Implemention
         public async Task<Customer> GetByIdAsync(int id)
         {
             return await _context.Customers.
-                Include(c => c.Invoices).
+                Include(c => c.Invoice).
                 Include(c => c.CustomerType).
                 SingleAsync(c => c.Id == id);
         }

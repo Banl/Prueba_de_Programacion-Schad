@@ -7,6 +7,6 @@
         public string Adress { get; set; }
         public bool Status { get; set; }
         public virtual CustomerType CustomerType { get; set; }
-        public virtual ICollection<Invoice> Invoices { get; set; }
+        public virtual ICollection<Invoice> Invoice { get; set; }
     }
 }

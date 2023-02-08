@@ -9,7 +9,7 @@
         public decimal TotalItbis { get; set; }
         public decimal SubTotal { get; set; }
         public decimal Total { get; set; }
-        public virtual ICollection<InvoiceViewMolde> Invoices { get; set; }
+        public virtual int Invoices { get; set; }
 
     }
 }

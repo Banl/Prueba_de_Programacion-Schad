@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-    public class InvoiceDeteil
+    public class InvoiceDetail
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
@@ -9,7 +9,7 @@
         public decimal TotalItbis { get; set; }
         public decimal SubTotal { get; set; }
         public decimal Total { get; set; }
-        public virtual ICollection<Invoice> Invoices { get; set; }
+        public virtual Invoice Invoice { get; set; }
 
     }
 }

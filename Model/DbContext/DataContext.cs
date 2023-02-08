@@ -12,8 +12,8 @@ namespace Model.DbContext
         #region Dbset
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerType> CustomerTypes { get; set; }
-        public virtual DbSet<Invoice> Invoices { get; set; }
-        public virtual DbSet<InvoiceDeteil> InvoiceDeteils { get; set; }
+        public virtual DbSet<Invoice> Invoice { get; set; }
+        public virtual DbSet<InvoiceDetail> InvoiceDetail { get; set; }
         #endregion
     }
 }

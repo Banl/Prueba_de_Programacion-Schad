@@ -9,6 +9,7 @@
 <div>
     <h4>Invoice</h4>
     <hr />
+    @Html.ActionLink("Add Deteil", "AddDetails", new { id = Model.Id})
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
@@ -36,7 +37,54 @@
         </dd>
     </dl>
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                id
+            </th>
+            <th>
+                Itbis
+            </th>
+            <th>
+                Qyt
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                SubTotal
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.InvoiceDetail)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalItbis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTotal)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "RemoveDetail", new {id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id}) |
     <a asp-action="Index">Back to List</a>
 </div>
